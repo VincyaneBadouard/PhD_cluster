@@ -12,6 +12,12 @@ Np <- 50 # number of predictions
 
 print(paste("run for sp", s))
 
+if(!file.exists("Chains"))
+  dir.create("Chains")
+if(!file.exists("Chains/Affine"))
+  dir.create("Chains/Affine")
+if(!file.exists("Chains/Quadratic"))
+  dir.create("Chains/Quadratic")
 
 # Presence data
 # load real presence-absences data on 25ha 
@@ -93,4 +99,5 @@ if(!file.exists(chain_path)){
 }
 Sys.time() # 13h
 
+print("DONE")
 
