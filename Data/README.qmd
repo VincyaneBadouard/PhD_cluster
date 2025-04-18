@@ -1,0 +1,11 @@
+---
+title: "Untitled"
+format: markdown_github
+editor: visual
+---
+
+Available data are:
+
+```{r}
+fs::dir_tree()
+```
