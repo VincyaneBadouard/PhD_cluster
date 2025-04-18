@@ -1,0 +1,20 @@
+---
+title: "singularity"
+format: markdown_github
+editor: visual
+---
+
+Use:
+
+```{r}
+#| eval: false 
+singularity pull docker://ghcr.io/jbris/stan-cmdstanr-docker:latest
+```
+
+And you get:
+
+```{r}
+fs::dir_tree()
+```
+
+To be copied on the cluster manually.
