@@ -1,0 +1,18 @@
+#!/bin/sh
+#SBATCH --job-name=transfertVox
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --ntasks-per-core=1
+#SBATCH --partition=agap_normal
+#SBATCH --time=01:00:00
+
+module purge
+
+set -vx
+
+SCRATCH_DIR="/lustre/badouardv/ForTrees"
+OUTPUT_DIR="/nfs/work/agap/AMAP/badouardv/ForTrees"
+
+mv $SCRATCH_DIR/* ${OUTPUT_DIR}/
+#mv $SCRATCH_DIR/ByTree_Output/Tree_Vox/* ${OUTPUT_DIR}/Tree_Vox/
+#mv $SCRATCH_DIR/ByTree_Output/Tree_XML/* ${OUTPUT_DIR}/Tree_XML/

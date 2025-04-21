@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=cmdstanr
+#SBATCH --job-name=Topography_Formchoice_1sp
 #SBATCH --account=agap
 #SBATCH --partition=agap_normal
 #SBATCH --output=/lustre/badouardv/PhD_cluster/Topography/Form_choice/log.out
@@ -9,6 +9,7 @@
 
 module purge
 module load singularity/3.6.3
+
 cd /lustre/badouardv/PhD_cluster/Topography/Form_choice/
-singularity exec ../../Singularity/cmdstanr.sif  Rscript Sampling.R "Symphonia_sp.1" 10
+singularity exec ../../Singularity/cmdstanr.sif  Rscript Sampling_1sp.R "Symphonia_sp.1" 10
 
