@@ -11,7 +11,6 @@ Np <- 50 # number of predictions
 
 # Species of interest
 sp <- (read.csv("../../Data/InterestSpecies.csv")[,2]) # 75
-print(paste("Species:", sp))
 print(paste("ID:", ID))
 s <- sp[ID]
 
@@ -70,7 +69,7 @@ if(!file.exists(chain_path)){
   fit <- model$sample(data = dataM[[s]],
                       chains = 4,
                       parallel_chains = 4,
-                      iter_warmup = iter,
+                      iter_warmup = floor(iter/2),
                       iter_sampling = iter,
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
@@ -98,7 +97,7 @@ if(!file.exists(chain_path)){
   fit <- model$sample(data = dataM[[s]],
                       chains = 4,
                       parallel_chains = 4,
-                      iter_warmup = iter,
+                      iter_warmup = floor(iter/2),
                       iter_sampling = iter,
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
