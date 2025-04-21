@@ -5,12 +5,14 @@ library(cmdstanr)
 
 # Args
 arg <- commandArgs(trailingOnly = TRUE)
-ID <- arg[1]
+ID <- as.integer(arg[1])
 iter <- as.integer(arg[2])
 Np <- 50 # number of predictions
 
 # Species of interest
 sp <- (read.csv("../../Data/InterestSpecies.csv")[,2]) # 75
+print(paste("Species:", sp))
+print(paste("ID:", ID))
 s <- sp[ID]
 
 print(paste("run for sp", s))
