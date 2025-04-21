@@ -99,5 +99,5 @@ if(!file.exists(chain_path)){
 }
 Sys.time() # 13h
 
-print("DONE")
+print(paste(s, "DONE"))
 
