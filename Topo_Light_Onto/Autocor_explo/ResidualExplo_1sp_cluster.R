@@ -40,12 +40,12 @@ tryCatch({
 # Compute raw residuals ----------------------------------------------------
 # get the posterior residuals for each observations, and I take the median across iterations.
 DATA <- list()
-DATA <- fits$summary("p") # p posterior
+DATA <- fits$summary("p", "median") # p posterior
 
 rm(fits)
 
 Residuals <- data.frame(y = datalist[[s]]$Presence, # Observed values (y = 0 or 1)
-                        p_hat = DATA$mean) %>% # predicted probability from model
+                        p_hat = DATA$median) %>% # predicted probability from model
   mutate(raw_e = y - p_hat, # raw residuals,
          Pearson_e = raw_e / sqrt(p_hat * (1 - p_hat)),
          Deviance_e = sign(raw_e)*sqrt(-2*(y*log(p_hat) + (1 - y)*log(1 - p_hat)))
@@ -68,17 +68,17 @@ samp <- bind_rows(pres, abs)
 
 # Computes Moran's coefficients on distance classes
 Moran_raw <- pgirmess::correlog(coords = data.frame(samp$Xutm, samp$Yutm),
-                            samp$raw_e,
-                            method = "Moran", nbclass = 30) %>% 
+                                samp$raw_e,
+                                method = "Moran", nbclass = NULL) %>% 
   as.data.frame()
 Moran_Pearson <- pgirmess::correlog(coords = data.frame(samp$Xutm, samp$Yutm),
-                                samp$Pearson_e,
-                                method = "Moran", nbclass = 30) %>% 
+                                    samp$Pearson_e,
+                                    method = "Moran", nbclass = NULL) %>% 
   as.data.frame()
 
 Moran_Deviance <- pgirmess::correlog(coords = data.frame(samp$Xutm, samp$Yutm),
-                                    samp$Pearson_e,
-                                    method = "Moran", nbclass = 30) %>% 
+                                     samp$Deviance_e,
+                                     method = "Moran", nbclass = NULL) %>% 
   as.data.frame()
 
 print("Moran's I computed")

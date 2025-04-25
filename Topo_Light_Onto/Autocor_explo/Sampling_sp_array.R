@@ -6,7 +6,9 @@ library(cmdstanr)
 # Args
 arg <- commandArgs(trailingOnly = TRUE)
 ID <- as.integer(arg[1])
+# ID = 1
 iter <- as.integer(arg[2])
+# iter = 2000
 
 # Species of interest
 # sp <- (read.csv("../../Data/InterestSpecies.csv")[,2]) # 75
@@ -17,29 +19,39 @@ s <- sp[ID]
 
 print(paste("run for sp", s))
 
+# setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/Autocor_explo/")
 if(!file.exists("Chains"))
   dir.create("Chains")
 if(!file.exists("Chains/Hybrid_allpred"))
   dir.create("Chains/Hybrid_allpred")
-getwd()
 
 # Presence data
 # load real presence-absences data on 25ha 
 load("../../Data/Realsp_25ha.Rdata")
 # View(datalist[[1]])
 
-datalist <- datalist[names(datalist) %in% s] # only species in sp
+DATA <- datalist[names(datalist) %in% s][[s]] # only species in sp
 # View(datalist[["Iryanthera_hostmannii"]])
 
+IDpres <- which(DATA$Presence==1) # all presence
+IDabs <- sample(which(DATA$Presence==0), size = length(IDpres)) # the same nbr of absences
+Id <- c(IDpres, IDabs)
+# abs <- DATA[IDabs,]
 
 # DataM
 # les noms des var doivent etre les memes que dans le fichier stan
-dataM <- lapply(datalist, function(x) list(N = nrow(x), # 47 850
-                                           Presence = x$Presence,
-                                           Light = x$logTransmittance,
-                                           Topography = x$logTWI,
-                                           DBH = x$logDBH)
-)
+dataM <- list(N = nrow(DATA), # 47 850
+              Presence = DATA$Presence,
+              Light = DATA$logTransmittance,
+              Topography = DATA$logTWI,
+              DBH = DATA$logDBH,
+              N_p = length(Id),
+              preds = Id)
+getwd()
+
+if(!file.exists("PredID"))
+  dir.create("PredID")
+saveRDS(Id, paste("./PredID/PredID_",s, ".rds",sep=""))
 
 # median(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
 # hist(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
@@ -47,7 +59,7 @@ dataM <- lapply(datalist, function(x) list(N = nrow(x), # 47 850
 # seq(min(datalist[[1]]$logTWI), max(datalist[[1]]$logTWI), length.out = Np) # 1.358045 - 2.400176
 # seq(min(datalist[[1]]$logTransmittance), max(datalist[[1]]$logTransmittance), length.out = Np) # -7.308724e+00 , 8.941571e-08
 
-names(dataM) <- names(datalist)
+# names(dataM) <- names(datalist)
 
 
 # Model
@@ -67,7 +79,7 @@ chain_path <- file.path("Chains", model_name, s)
 if(!file.exists(chain_path)){
   # unlink(chain_path, recursive = TRUE)
   dir.create(chain_path)
-  fit <- model$sample(data = dataM[[s]],
+  fit <- model$sample(data = dataM,
                       chains = 4,
                       parallel_chains = 4,
                       iter_warmup = floor(iter/2),
@@ -75,7 +87,7 @@ if(!file.exists(chain_path)){
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
 }
-Sys.time() # 2h
+Sys.time() # 40 min
 
 print(paste(s, "DONE"))
 
