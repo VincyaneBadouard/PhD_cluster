@@ -19,7 +19,7 @@ s <- sp[ID]
 
 print(paste("run for sp", s))
 
-setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/Autocor_explo/")
+# setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/Autocor_explo/")
 if(!file.exists("Chains"))
   dir.create("Chains")
 if(!file.exists("Chains/Hybrid_allpred"))
