@@ -15,5 +15,5 @@ module purge
 module load singularity/3.6.3
 
 cd /lustre/badouardv/PhD_cluster/Topo_Light_Onto/Autocor_explo/
-singularity exec /lustre/badouardv/PhD_cluster/Singularity/cmdstanr.sif  Rscript ResidualExplo_1sp_cluster.R ${SLURM_ARRAY_TASK_ID}
+singularity exec /lustre/badouardv/PhD_cluster/Singularity/vincyane.sif  Rscript ResidualExplo_1sp_cluster.R ${SLURM_ARRAY_TASK_ID}
 

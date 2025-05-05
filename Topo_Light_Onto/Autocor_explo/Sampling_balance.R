@@ -68,6 +68,8 @@ if(!file.exists(chain_path)){
 }
 Sys.time() # 1 min
 
+print("Hybrid_balance DONE")
+
 # Model
 Sys.time()
 model_name <- "Null"
@@ -95,5 +97,5 @@ if(!file.exists(chain_path)){
 }
 Sys.time() # 1 min
 
-print(paste(s, "DONE"))
+print("Null_balance DONE")
 
