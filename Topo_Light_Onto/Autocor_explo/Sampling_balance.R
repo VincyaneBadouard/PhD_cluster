@@ -11,9 +11,9 @@ iter <- as.integer(arg[2])
 # iter = 2000
 
 # Species of interest
-# sp <- (read.csv("../../Data/InterestSpecies.csv")[,2]) # 75
-sp <- c("Anaxagorea_dolichocarpa", "Tabernaemontana_macrocalyx", # 5 agreg sp
-        "Eperua_falcata", "Dicorynia_guianensis", "Paypayrola_hulkiana")
+sp <- (read.csv("../../Data/InterestSpecies.csv")[,2]) # 75 ; glisser le nouveaux fichier pour treedatacor
+# sp <- c("Anaxagorea_dolichocarpa", "Tabernaemontana_macrocalyx", # 5 agreg sp
+#        "Eperua_falcata", "Dicorynia_guianensis", "Paypayrola_hulkiana")
 print(paste("ID:", ID))
 s <- sp[ID]
 

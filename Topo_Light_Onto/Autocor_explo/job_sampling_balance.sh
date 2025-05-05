@@ -4,7 +4,7 @@
 #SBATCH --partition=agap_normal
 #SBATCH --output=/lustre/badouardv/PhD_cluster/Topo_Light_Onto/Autocor_explo/logsout/log_%a.out
 #SBATCH --error=/lustre/badouardv/PhD_cluster/Topo_Light_Onto/Autocor_explo/logserr/log_%a.err
-#SBATCH --array=1-5
+#SBATCH --array=1-75
 #SBATCH --time=1:30:00
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=4

@@ -5,7 +5,7 @@
 #SBATCH --output=/lustre/badouardv/PhD_cluster/Topography/Variable_choice/logsout/log_%a.out
 #SBATCH --error=/lustre/badouardv/PhD_cluster/Topography/Variable_choice/logserr/log_%a.err
 #SBATCH --array=1-75
-#SBATCH --time=2:00:00
+#SBATCH --time=4:30:00
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mail-user=vincyane.badouard@gmail.com
