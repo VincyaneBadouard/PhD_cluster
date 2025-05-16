@@ -22,7 +22,6 @@ data {
   // int<lower=1> N_D_p ; // n DBH predictions
   // vector[N_D_p] DBHp ; // DBH of predictions
   // matrix[1, K] Spatialp ; // eigenvectors matrix
-
 }
 transformed data {
   real adj = N * 1.0 / sum(Presence); // inverse of species relative abundance
