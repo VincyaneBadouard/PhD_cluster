@@ -54,6 +54,8 @@ model {
   
   // a * (Environment - O)^2 + gamma_p
   // gamma_p = gamma0 + tau*topo
+      // Priors
+  iota ~ normal(0, 0.7); // to keep O in env range at each DBH
 }
 generated quantities { // predictions
 // matrix<lower=0, upper=1>[N_L_p, N_D_p] p ;

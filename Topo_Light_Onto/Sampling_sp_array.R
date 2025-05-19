@@ -85,7 +85,7 @@ if(!file.exists(chain_path)){
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
 }
-Sys.time() # 2h
+Sys.time() # 50 min
 
 print(paste(s, "DONE"))
 

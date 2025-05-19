@@ -28,5 +28,7 @@ transformed parameters {
 model {
   // Presence ~ bernoulli_logit(alpha + beta1*Environment + beta2*Environment.*Environment); // developped Likelihood
   Presence ~ bernoulli_logit(a * (Light - (O + iota*DBH))^2 + gamma + tau*Topography); // canonic Likelihood (affine)
+  // Priors
+  iota ~ normal(0, 0.7); // to keep O in env range at each DBH
 }
 
