@@ -17,18 +17,16 @@ parameters {
   real<lower=7*2*-exp(beta2_p), upper=0> beta1;
   real alpha;
   real tau; // slope of the topography effect
-  real iota; // ontogeny effect
+  real<lower=(-(-beta1/(2*(-exp(beta2_p))))-7)/log(100), upper=-(-beta1/(2*(-exp(beta2_p))))/log(100)> iota; // ontogeny effect
 }
 transformed parameters {
   real beta2 = -exp(beta2_p); // beta2<0 : forced for a concave form
   real a = beta2;
-  real O = -beta1/(2*beta2);
+  real O_1 = -beta1/(2*beta2);
   real gamma = alpha-beta1^2/(4*beta2);
 }
 model {
   // Presence ~ bernoulli_logit(alpha + beta1*Environment + beta2*Environment.*Environment); // developped Likelihood
-  Presence ~ bernoulli_logit(a * (Light - (O + iota*DBH))^2 + gamma + tau*Topography); // canonic Likelihood (affine)
-  // Priors
-  iota ~ normal(0, 0.7); // to keep O in env range at each DBH
+  Presence ~ bernoulli_logit(a * (Light - (O_1 + iota*DBH))^2 + gamma + tau*Topography); // canonic Likelihood (affine)
 }
 

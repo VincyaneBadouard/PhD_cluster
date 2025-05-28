@@ -16,6 +16,7 @@ sp <- c("Anaxagorea_dolichocarpa", "Tabernaemontana_macrocalyx", # 5 agreg sp
         "Eperua_falcata", "Dicorynia_guianensis", "Paypayrola_hulkiana")
 print(paste("ID:", ID))
 s <- sp[ID]
+# s = "Dicorynia_guianensis"
 
 print(paste("run for sp", s))
 
@@ -33,9 +34,9 @@ load("../../Data/Realsp_25ha.Rdata")
 DATA <- datalist[names(datalist) %in% s][[s]] # only species in sp
 # View(datalist[["Iryanthera_hostmannii"]])
 
-IDpres <- which(DATA$Presence==1) # all presence
-IDabs <- sample(which(DATA$Presence==0), size = length(IDpres)) # the same nbr of absences
-Id <- c(IDpres, IDabs)
+# IDpres <- which(DATA$Presence==1) # all presence
+# IDabs <- sample(which(DATA$Presence==0), size = length(IDpres)) # the same nbr of absences
+# Id <- c(IDpres, IDabs)
 # abs <- DATA[IDabs,]
 
 # DataM
@@ -44,14 +45,12 @@ dataM <- list(N = nrow(DATA), # 47 850
               Presence = DATA$Presence,
               Light = DATA$logTransmittance,
               Topography = DATA$logTWI,
-              DBH = DATA$logDBH,
-              N_p = length(Id),
-              preds = Id)
+              DBH = DATA$logDBH)#,
+              # N_p = length(Id),
+              # preds = Id)
 getwd()
 
-if(!file.exists("PredID"))
-  dir.create("PredID")
-saveRDS(Id, paste("./PredID/PredID_",s, ".rds",sep=""))
+# if(!file.exisvste("./PredID/PredID_",s, ".rds",sep=""))
 
 # median(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
 # hist(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
@@ -74,6 +73,7 @@ Sys.time() # 1 min
 
 
 # Sampling
+options(cmdstanr_output_dir = "D://temp/")
 Sys.time()
 chain_path <- file.path("Chains", model_name, s)
 if(!file.exists(chain_path)){
@@ -82,12 +82,12 @@ if(!file.exists(chain_path)){
   fit <- model$sample(data = dataM,
                       chains = 4,
                       parallel_chains = 4,
-                      iter_warmup = floor(iter/2),
+                      iter_warmup = iter,
                       iter_sampling = iter,
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
 }
-Sys.time() # 40 min
+Sys.time() # 50 min
 
 print(paste(s, "DONE"))
 

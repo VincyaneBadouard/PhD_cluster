@@ -23,39 +23,27 @@ data {
   // vector[N_D_p] DBHp ; // DBH of predictions
   // matrix[1, K] Spatialp ; // eigenvectors matrix
 }
-transformed data {
-  real adj = N * 1.0 / sum(Presence); // inverse of species relative abundance
-}
-/*parameters {
-real<lower=-300, upper=-0.02> a ; // beta2<0 : forced for a concave form  
-real<lower=-7, upper=0> O ; // extremum : -beta1/(2*beta2) 0.5
-real<lower=-2, upper=300> gamma ; // alpha-(beta1^2/4*beta2)
-}*/
+// transformed data {
+//   real adj = N * 1.0 / sum(Presence); // inverse of species relative abundance
+// }
 parameters {
   real<lower=-10, upper=10> beta2_p;  
-  // real<lower=-300, upper=-0.02> beta2;
   real<lower=7*2*-exp(beta2_p), upper=0> beta1;
   real alpha;
   real tau; // slope of the topography effect
-  real iota; // ontogeny effect
+  real<lower=(-(-beta1/(2*(-exp(beta2_p))))-7)/log(100), upper=-(-beta1/(2*(-exp(beta2_p))))/log(100)> iota; // ontogeny effect
   vector[K] psi; // spatial effect (i.e. spatial autocorrelation)
 }
 transformed parameters {
   real beta2 = -exp(beta2_p); // beta2<0 : forced for a concave form
   real a = beta2;
-  real O = -beta1/(2*beta2);
+  real O_1 = -beta1/(2*beta2);
   real gamma = alpha-beta1^2/(4*beta2);
 }
 model {
   // Presence ~ bernoulli_logit(alpha + beta1*Environment + beta2*Environment.*Environment); // developped Likelihood
-  Presence ~ bernoulli_logit(a * (Light - (O + iota*DBH))^2 + gamma + tau*Topography + Spatial*psi);
+  Presence ~ bernoulli_logit(a * (Light - (O_1 + iota*DBH))^2 + gamma + tau*Topography + Spatial*psi);
 
-  // a * (Light - O)^2 + gamma + a * (Topography - O)^2 //quadra
-  
-  // a * (Environment - O)^2 + gamma_p
-  // gamma_p = gamma0 + tau*topo
-      // Priors
-  iota ~ normal(0, 0.7); // to keep O in env range at each DBH
 }
 generated quantities { // predictions
 // matrix<lower=0, upper=1>[N_L_p, N_D_p] p ;
