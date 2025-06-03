@@ -7,14 +7,18 @@ library(cmdstanr)
 arg <- commandArgs(trailingOnly = TRUE)
 ID <- as.integer(arg[1])
 iter <- as.integer(arg[2])
+# iter = 2000
 Np <- 50 # number of predictions
 N_D_p <- 5 # n DBH
 dbhs <- c(2.5, 7.5, 15, 25, 35)
+
+# setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/")
 
 # Species of interest
 sp <- (read.csv("../Data/InterestSpecies.csv")[,2]) # 75
 print(paste("ID:", ID))
 s <- sp[ID]
+# s = "Eschweilera_coriacea"
 
 print(paste("run for sp", s))
 
@@ -29,27 +33,26 @@ getwd()
 load("../Data/Realsp_25ha.Rdata")
 # View(datalist[[1]])
 
-datalist <- datalist[names(datalist) %in% s] # only species in sp
+x <- datalist[names(datalist) %in% s][[s]] # only species in sp
 # View(datalist[["Iryanthera_hostmannii"]])
 
 
 # DataM
 # les noms des var doivent etre les memes que dans le fichier stan
-dataM <- lapply(datalist, function(x) list(N = nrow(x), # 47 850
-                                           Presence = x$Presence,
-                                           Light = x$logTransmittance,
-                                           Topography = x$logTWI,
-                                           DBH = x$logDBH,
-                                           # number of predictions
-                                           N_L_p = Np, # light
-                                           N_T_p = Np, # topography
-                                           N_D_p = N_D_p, # DBH
-                                           # environment of predictions
-                                           Lightp = seq(min(x$logTransmittance), max(x$logTransmittance), length.out = Np),
-                                           # Topographyp = seq(min(x$logTWI), max(x$logTWI), length.out = Np),
-                                           Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
-                                           DBHp = log(dbhs))
-)
+dataM <- list(N = nrow(x), # 47 850
+              Presence = x$Presence,
+              Light = x$logTransmittance,
+              Topography = x$logTWI,
+              DBH = x$logDBH,
+              # number of predictions
+              N_L_p = Np, # light
+              N_T_p = Np, # topography
+              N_D_p = N_D_p, # DBH
+              # environment of predictions
+              Lightp = seq(min(x$logTransmittance), max(x$logTransmittance), length.out = Np),
+              # Topographyp = seq(min(x$logTWI), max(x$logTWI), length.out = Np),
+              Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
+              DBHp = log(dbhs))
 
 # median(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
 # hist(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
