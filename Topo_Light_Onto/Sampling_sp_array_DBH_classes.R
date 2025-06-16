@@ -11,7 +11,7 @@ iter <- as.integer(arg[2])
 # iter = 2000
 Np <- 50 # number of predictions
 
-Combin <- read_csv("Data/Combin_Sp_DBHclas.csv")
+Combin <- read_csv("../Data/Combin_Sp_DBHclas.csv")
 
 # setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/")
 
@@ -23,8 +23,8 @@ print(paste("run for sp", s, "DBH class:", Combin[ID,]$DBH_classes))
 
 if(!file.exists("Chains"))
   dir.create("Chains")
-if(!file.exists("Chains/Hybrid"))
-  dir.create("Chains/Hybrid")
+if(!file.exists("Chains/Hybrid_no_iota"))
+  dir.create("Chains/Hybrid_no_iota")
 getwd()
 
 # Presence data
@@ -72,6 +72,9 @@ Sys.time() # 1 min
 
 # Sampling
 Sys.time()
+chain_path <- file.path("Chains", model_name, s)
+if(!file.exists(chain_path)) dir.create(chain_path)
+
 chain_path <- file.path("Chains", model_name, s, Combin[ID,]$DBH_classes)
 if(!file.exists(chain_path)){
   # unlink(chain_path, recursive = TRUE)
@@ -79,7 +82,7 @@ if(!file.exists(chain_path)){
   fit <- model$sample(data = dataM,
                       chains = 4,
                       parallel_chains = 4,
-                      iter_warmup = floor(iter/2),
+                      iter_warmup = iter,
                       iter_sampling = iter,
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
