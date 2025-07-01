@@ -11,9 +11,10 @@ iter <- as.integer(arg[2])
 # iter = 2000
 Np <- 50 # number of predictions
 
-Combin <- read_csv("../Data/Combin_Sp_DBHclas.csv")
-
 # setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/")
+
+# Species size classes combinations
+Combin <- read_csv("../Data/Combin_Sp_DBHclas.csv")
 
 print(paste("ID:", ID))
 s <- Combin[ID,]$Species
@@ -35,6 +36,9 @@ load("../Data/Realsp_25ha.Rdata")
 x <- datalist[names(datalist) %in% s][[s]] %>% # only species in sp
   filter(DBHcor >= Combin[ID,]$Min & DBHcor < Combin[ID,]$Max) # only the DBH class
 # View(datalist[["Iryanthera_hostmannii"]])
+
+# 10 individuals minimum
+if(nrow(x[x$Presence==1,])>=10){
 
 
 # DataM
@@ -91,3 +95,4 @@ Sys.time() # 50 min
 
 print(paste(s, "DONE"))
 
+}
