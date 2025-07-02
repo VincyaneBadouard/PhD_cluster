@@ -9,10 +9,8 @@ ID <- as.integer(arg[1])
 iter <- as.integer(arg[2])
 # iter <- 2000
 Np <- 50 # number of predictions
-N_D_p <- 5 # n DBH
-dbhs <- c(2.5, 7.5, 15, 25, 35)
 
-# setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/")
+# setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light/")
 
 
 # Species of interest
@@ -45,20 +43,16 @@ dataM <- lapply(datalist, function(x) list(N = nrow(x), # 47 850
                                            Presence = x$Presence,
                                            Light = x$logTransmittance,
                                            Topography = x$logTWI,
-                                           DBH = x$logDBH,
                                            # spatial predictors (i.e moran's eigenvectors)
-                                           K = length(grep("^MEM",colnames(x))), # Nbr of eigenvectors
-                                           Spatial = as.matrix(x[,grep("^MEM",colnames(x))]) # eigenvectors matrix
+                                           K = length(grep("^V",colnames(x))), # Nbr of eigenvectors
+                                           Spatial = as.matrix(x[,grep("^V",colnames(x))]), # eigenvectors matrix
                                            # number of predictions
-                                           # N_L_p = Np, # light
-                                           # N_T_p = Np, # topography
-                                           # N_D_p = N_D_p, # DBH
-                                           # # environment of predictions
-                                           # Lightp = seq(min(x$logTransmittance), max(x$logTransmittance), length.out = Np),
-                                           # # Topographyp = seq(min(x$logTWI), max(x$logTWI), length.out = Np),
-                                           # Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
-                                           # # Spatialp = apply(x[x$Presence==1, grep("^MEM",colnames(x))], 2, median),
-                                           # DBHp = log(dbhs)
+                                           N_L_p = Np, # light
+                                           N_T_p = Np, # topography
+                                           # environment of predictions
+                                           Lightp = seq(min(x$logTransmittance), max(x$logTransmittance), length.out = Np),
+                                           Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
+                                           Spatialp = apply(x[x$Presence==1, grep("^V",colnames(x))], 2, median)
                                           )
 )
 
@@ -70,8 +64,6 @@ dataM <- lapply(datalist, function(x) list(N = nrow(x), # 47 850
 # median(datalist[[1]][datalist[[1]]$Presence==1,]$logTWI)
 # seq(min(datalist[[1]]$logTWI), max(datalist[[1]]$logTWI), length.out = Np) # 1.358045 - 2.400176
 # seq(min(datalist[[1]]$logTransmittance), max(datalist[[1]]$logTransmittance), length.out = Np) # -7.308724e+00 , 8.941571e-08
-
-names(dataM) <- names(datalist)
 
 
 # Model
@@ -91,16 +83,15 @@ chain_path <- file.path("Chains", model_name, s)
 if(!file.exists(chain_path)){
   # unlink(chain_path, recursive = TRUE)
   dir.create(chain_path)
-  fit <- model$sample(data = dataM[[s]],
+  fit <- model$sample(data = dataM,
                       chains = 4,
                       parallel_chains = 4,
-                      iter_warmup = floor(iter/2),
+                      iter_warmup = iter,
                       iter_sampling = iter,
                       save_warmup = FALSE)
   fit$save_output_files(dir = chain_path)
 }
-Sys.time() # très très lent...1h40 sans les prédictions
-# 2 chain(s) finished unexpectedly!
+Sys.time() 
 
 print(paste(s, "DONE"))
 

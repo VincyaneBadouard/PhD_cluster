@@ -1,4 +1,4 @@
-// Bernoulli environment (light + topo) 
+// Bernoulli (light + topo) 
 // Estimates the parameters of the developed form (∝ , β1, β2) of the quadratic equation,
 // constraining them in concave form (β2 < 0; β1 ⋲ [-7*2β2; 0]).
 // We define the concave form parameters (a, O, gamma) in transformed parameters,
