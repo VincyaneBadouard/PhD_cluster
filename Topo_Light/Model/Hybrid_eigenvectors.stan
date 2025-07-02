@@ -14,7 +14,7 @@ data {
   real Topographyp ;  // Spatial predictors (i.e moran's eigenvectors)
   int<lower=1> K ; // Nbr of eigenvectors
   matrix[N, K] Spatial ; // eigenvectors matrix
-  matrix[1, K] Spatialp ; // eigenvectors matrix
+  // matrix[1, K] Spatialp ; // eigenvectors matrix
   
 }
 parameters {
@@ -38,7 +38,7 @@ model {
 generated quantities { // predictions
 vector<lower=0, upper=1>[N_L_p] p ;
 
-p = inv_logit(a*(Lightp - O)^2 + gamma + tau*Topographyp + Spatialp*psi); 
+p = inv_logit(a*(Lightp - O)^2 + gamma + tau*Topographyp);
 
 // For model evaluation with loo;
 // vector[N] log_lik; // factors of the log-likelihood as a vector

@@ -32,39 +32,30 @@ getwd()
 load("../Data/Realsp_25ha_eigenvectors.Rdata")
 # View(datalist_eig[[1]])
 
-datalist <- datalist_eig[names(datalist_eig) %in% s] # only species in sp
+x <- datalist_eig[names(datalist_eig) %in% s][[s]] # only species in sp
 # View(datalist[["Iryanthera_hostmannii"]])
 
 
 # DataM
 # les noms des var doivent etre les memes que dans le fichier stan
 # x <- datalist[[1]]
-dataM <- lapply(datalist, function(x) list(N = nrow(x), # 47 850
-                                           Presence = x$Presence,
-                                           Light = x$logTransmittance,
-                                           Topography = x$logTWI,
-                                           # spatial predictors (i.e moran's eigenvectors)
-                                           K = length(grep("^V",colnames(x))), # Nbr of eigenvectors
-                                           Spatial = as.matrix(x[,grep("^V",colnames(x))]), # eigenvectors matrix
-                                           # number of predictions
-                                           N_L_p = Np, # light
-                                           N_T_p = Np, # topography
-                                           # environment of predictions
-                                           Lightp = seq(min(x$logTransmittance), max(x$logTransmittance), length.out = Np),
-                                           Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
-                                           Spatialp = apply(x[x$Presence==1, grep("^V",colnames(x))], 2, median)
-                                          )
+dataM <- list(N = nrow(x), # 47 850
+              Presence = x$Presence,
+              Light = x$logTransmittance,
+              Topography = x$logTWI,
+              # spatial predictors (i.e moran's eigenvectors)
+              K = length(grep("^V",colnames(x))), # Nbr of eigenvectors
+              Spatial = as.matrix(x[,grep("^V",colnames(x))]) , # eigenvectors matrix
+              # number of predictions
+              N_L_p = Np, # light
+              N_T_p = Np, # topography
+              # environment of predictions
+              Lightp = seq(min(x$logTransmittance), max(x$logTransmittance), length.out = Np),
+              Topographyp = median(x[x$Presence==1,]$logTWI) # the topography the most represented
 )
 
 # apply(Spatial, 2, median)
 # apply(x[x$Presence==1,grep("^MEM",colnames(x))], 2, median)
-
-# median(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
-# hist(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
-# median(datalist[[1]][datalist[[1]]$Presence==1,]$logTWI)
-# seq(min(datalist[[1]]$logTWI), max(datalist[[1]]$logTWI), length.out = Np) # 1.358045 - 2.400176
-# seq(min(datalist[[1]]$logTransmittance), max(datalist[[1]]$logTransmittance), length.out = Np) # -7.308724e+00 , 8.941571e-08
-
 
 # Model
 Sys.time()

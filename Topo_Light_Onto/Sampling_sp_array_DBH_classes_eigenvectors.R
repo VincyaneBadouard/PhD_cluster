@@ -56,8 +56,8 @@ if(nrow(x[x$Presence==1,])>=10){
                 Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
                 # spatial predictors (i.e moran's eigenvectors)
                 K = length(grep("^MEM",colnames(x))), # Nbr of eigenvectors
-                Spatial = as.matrix(x[,grep("^MEM",colnames(x))]), # eigenvectors matrix
-                Spatialp = apply(x[x$Presence==1, grep("^V",colnames(x))], 2, median)
+                Spatial = as.matrix(x[,grep("^MEM",colnames(x))]) # eigenvectors matrix
+                # Spatialp = apply(x[x$Presence==1, grep("^V",colnames(x))], 2, median)
                 
   )
   
