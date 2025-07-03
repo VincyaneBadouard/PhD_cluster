@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=Topo_Light_Onto_sp_array_DBH_classes
+#SBATCH --job-name=Topo_Light_Onto_sp_array_DBH_classes_autocor
 #SBATCH --account=agap
 #SBATCH --partition=agap_normal
 #SBATCH --output=/lustre/badouardv/PhD_cluster/Topo_Light_Onto/logsout/log_%a.out
 #SBATCH --error=/lustre/badouardv/PhD_cluster/Topo_Light_Onto/logserr/log_%a.err
-#SBATCH --array=3-300
+#SBATCH --array=1-300
 #SBATCH --time=5:00:00
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=4

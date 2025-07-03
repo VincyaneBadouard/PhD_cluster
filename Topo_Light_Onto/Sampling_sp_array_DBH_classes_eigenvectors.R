@@ -6,9 +6,9 @@ library(cmdstanr)
 # Args
 arg <- commandArgs(trailingOnly = TRUE)
 ID <- as.integer(arg[1])
-# ID = 1
+# ID = 6
 iter <- as.integer(arg[2])
-# iter = 2000
+# iter = 10
 Np <- 50 # number of predictions
 
 # setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/")
@@ -30,12 +30,12 @@ getwd()
 
 # Presence data
 # load real presence-absences data on 25ha 
-load("../Data/Realsp_25ha.Rdata")
-# View(datalist[[1]])
+load("../Data/Realsp_25ha_eigenvectors.Rdata")
+# View(datalist_eig[[1]])
 
-x <- datalist[names(datalist) %in% s][[s]] %>% # only species in sp
+x <- datalist_eig[names(datalist_eig) %in% s][[s]] %>% # only species in sp
   filter(DBHcor >= Combin[ID,]$Min & DBHcor < Combin[ID,]$Max) # only the DBH class
-# View(datalist[["Iryanthera_hostmannii"]])
+# View(datalist_eig[["Iryanthera_hostmannii"]])
 
 # 10 individuals minimum
 if(nrow(x[x$Presence==1,])>=10){
@@ -55,19 +55,13 @@ if(nrow(x[x$Presence==1,])>=10){
                 # Topographyp = seq(min(x$logTWI), max(x$logTWI), length.out = Np),
                 Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
                 # spatial predictors (i.e moran's eigenvectors)
-                K = length(grep("^MEM",colnames(x))), # Nbr of eigenvectors
-                Spatial = as.matrix(x[,grep("^MEM",colnames(x))]) # eigenvectors matrix
+                K = length(grep("^V",colnames(x))), # Nbr of eigenvectors
+                Spatial = as.matrix(x[,grep("^V",colnames(x))]) # eigenvectors matrix
                 # Spatialp = apply(x[x$Presence==1, grep("^V",colnames(x))], 2, median)
                 
   )
   
-  # median(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
-  # hist(datalist[[1]][datalist[[1]]$Presence==1,]$TWI)
-  # median(datalist[[1]][datalist[[1]]$Presence==1,]$logTWI)
-  # seq(min(datalist[[1]]$logTWI), max(datalist[[1]]$logTWI), length.out = Np) # 1.358045 - 2.400176
-  # seq(min(datalist[[1]]$logTransmittance), max(datalist[[1]]$logTransmittance), length.out = Np) # -7.308724e+00 , 8.941571e-08
-  
-  
+
   # Model
   Sys.time()
   model_name <- "Hybrid_eigenvectors"
