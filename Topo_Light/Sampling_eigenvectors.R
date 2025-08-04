@@ -28,8 +28,8 @@ if(!file.exists("Chains/Hybrid_eigenvectors"))
 getwd()
 
 # Presence data
-# load real presence-absences data on 25ha 
-load("../Data/Realsp_25ha_eigenvectors.Rdata")
+# load real presence-absences data on 9ha 
+load("../Data/Realsp_9ha_eigenvectors.Rdata")
 # View(datalist_eig[[1]])
 
 x <- datalist_eig[names(datalist_eig) %in% s][[s]] # only species in sp
@@ -39,12 +39,16 @@ x <- datalist_eig[names(datalist_eig) %in% s][[s]] # only species in sp
 # DataM
 # les noms des var doivent etre les memes que dans le fichier stan
 # x <- datalist[[1]]
+K = length(grep("^V",colnames(x)))
+Autocor = ifelse(K>0, 1,0)
+
 dataM <- list(N = nrow(x), # 47 850
               Presence = x$Presence,
               Light = x$logTransmittance,
               Topography = x$logTWI,
-              # spatial predictors (i.e moran's eigenvectors)
-              K = length(grep("^V",colnames(x))), # Nbr of eigenvectors
+              # spatial predictors (i.e Moran's eigenvectors)
+              Autocor = Autocor,
+              K = K, # Nbr of eigenvectors
               Spatial = as.matrix(x[,grep("^V",colnames(x))]) , # eigenvectors matrix
               # number of predictions
               N_L_p = Np, # light
