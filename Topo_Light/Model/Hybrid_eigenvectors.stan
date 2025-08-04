@@ -5,6 +5,7 @@
 // and the equation remains a(x - O)2 + gamma.
 
 data {
+  int<lower=0,upper=1> Autocor;
   int<lower=1> N ; // obs
   array[N] int<lower=0, upper=1> Presence ;
   vector[N] Light ;
@@ -33,7 +34,11 @@ transformed parameters {
 }
 model {
   // Presence ~ bernoulli_logit(alpha + beta1*Environment + beta2*Environment.*Environment); // developped Likelihood
-  Presence ~ bernoulli_logit(a * (Light - O)^2 + gamma + tau*Topography + Spatial*psi); // canonic Likelihood (affine)
+  if (Autocor == 1) {
+    Presence ~ bernoulli_logit(a * (Light - O)^2 + gamma + tau*Topography + Spatial*psi); // canonic Likelihood (affine)
+  } else {
+    Presence ~ bernoulli_logit(a * (Light - O)^2 + gamma + tau*Topography); // canonic Likelihood (affine)
+  }  
 }
 generated quantities { // predictions
 vector<lower=0, upper=1>[N_L_p] p ;
