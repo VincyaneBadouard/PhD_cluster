@@ -6,9 +6,9 @@ library(cmdstanr)
 # Args
 arg <- commandArgs(trailingOnly = TRUE)
 ID <- as.integer(arg[1])
-# ID = 6
+# ID = 141
 iter <- as.integer(arg[2])
-# iter = 10
+# iter = 500
 Np <- 50 # number of predictions
 
 # setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light_Onto/")
@@ -18,7 +18,7 @@ Combin <- read_csv("../Data/Combin_Sp_DBHclas.csv")
 
 print(paste("ID:", ID))
 s <- Combin[ID,]$Species
-# s = "Eschweilera_coriacea"
+# s = "Lecythis_poiteaui"
 
 print(paste("run for sp", s, "DBH class:", Combin[ID,]$DBH_classes))
 
@@ -40,6 +40,8 @@ x <- datalist_eig[names(datalist_eig) %in% s][[s]] %>% # only species in sp
 # 10 individuals minimum
 if(nrow(x[x$Presence==1,])>=10){
   
+  K = length(grep("^V",colnames(x)))
+  Autocor = ifelse(K>0, 1,0)
   
   # DataM
   # les noms des var doivent etre les memes que dans le fichier stan
@@ -55,7 +57,8 @@ if(nrow(x[x$Presence==1,])>=10){
                 # Topographyp = seq(min(x$logTWI), max(x$logTWI), length.out = Np),
                 Topographyp = median(x[x$Presence==1,]$logTWI), # the topography the most represented
                 # spatial predictors (i.e moran's eigenvectors)
-                K = length(grep("^V",colnames(x))), # Nbr of eigenvectors
+                Autocor = Autocor,
+                K = K, # Nbr of eigenvectors
                 Spatial = as.matrix(x[,grep("^V",colnames(x))]) # eigenvectors matrix
                 # Spatialp = apply(x[x$Presence==1, grep("^V",colnames(x))], 2, median)
                 

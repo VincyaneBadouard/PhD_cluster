@@ -7,7 +7,7 @@ library(cmdstanr)
 arg <- commandArgs(trailingOnly = TRUE)
 ID <- as.integer(arg[1])
 iter <- as.integer(arg[2])
-# iter <- 2000
+# iter <- 500
 Np <- 50 # number of predictions
 
 # setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Topo_Light/")
@@ -17,7 +17,7 @@ Np <- 50 # number of predictions
 sp <- (read.csv("../Data/InterestSpecies.csv")[,2]) # 75
 print(paste("ID:", ID))
 s <- sp[ID]
-# s = "Dicorynia_guianensis"
+# s = "Lecythis_poiteaui"
 
 print(paste("run for sp", s))
 

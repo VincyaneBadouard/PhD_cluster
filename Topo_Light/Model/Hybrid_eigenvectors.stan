@@ -13,7 +13,7 @@ data {
   int<lower=1> N_L_p ; // n light predictions
   vector[N_L_p] Lightp ; // Light environment of predictions
   real Topographyp ;  // Spatial predictors (i.e moran's eigenvectors)
-  int<lower=1> K ; // Nbr of eigenvectors
+  int<lower=0> K ; // Nbr of eigenvectors
   matrix[N, K] Spatial ; // eigenvectors matrix
   // matrix[1, K] Spatialp ; // eigenvectors matrix
   
