@@ -6,13 +6,13 @@
 
 data {
   int<lower=0,upper=1> Autocor;
-  int<lower=1> N ; // obs
+  int<lower=1> N ; // observations
   array[N] int<lower=0, upper=1> Presence ;
   vector[N] Light ;
   vector[N] Topography ;
   int<lower=1> N_L_p ; // n light predictions
   vector[N_L_p] Lightp ; // Light environment of predictions
-  real Topographyp ;  // Spatial predictors (i.e moran's eigenvectors)
+  real Topographyp ;  // Topographic environment of predictions
   int<lower=0> K ; // Nbr of eigenvectors
   matrix[N, K] Spatial ; // eigenvectors matrix
   // matrix[1, K] Spatialp ; // eigenvectors matrix
