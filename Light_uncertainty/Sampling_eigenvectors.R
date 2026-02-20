@@ -20,7 +20,7 @@ print(paste("ID:", ID))
 s <- Combin[ID,]$Species
 # s = "Tachigali_melinonii"
 
-print(paste("run for sp", s))
+print(paste("run for sp", s, "Sample:", Combin[ID,]$Sample))
 
 if(!file.exists("Chains"))
   dir.create("Chains")
@@ -76,7 +76,11 @@ Sys.time() # 1 min
 
 # Sampling
 Sys.time()
+chain_path <- file.path("Chains", model_name, s)
+  if(!file.exists(chain_path)) dir.create(chain_path)
+
 chain_path <- file.path("Chains", model_name, s, Combin[ID,]$Sample)
+print(chain_path)
 
 if(!file.exists(chain_path)){
   # unlink(chain_path, recursive = TRUE)
