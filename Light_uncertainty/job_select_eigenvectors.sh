@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=Light_uncertainty
+#SBATCH --job-name=Select_eigenvectors
 #SBATCH --account=dedicated-cpu@cirad-normal
 #SBATCH --partition=cpu-dedicated
 #SBATCH --output=logsout/log_%a.out
@@ -14,5 +14,5 @@ module purge
 module load singularity/3.6.3
 
 cd /scratch/users/badouardv/PhD_cluster/Light_uncertainty/
-singularity exec ../Singularity/cmdstanr.sif  Rscript Sampling_eigenvectors.R ${SLURM_ARRAY_TASK_ID} 2000
+singularity exec ../Singularity/cmdstanr.sif  Rscript Select_eigenvectors_per_sp.R ${SLURM_ARRAY_TASK_ID}
 
