@@ -14,5 +14,5 @@ module purge
 module load singularity/3.6.3
 
 cd /scratch/users/badouardv/PhD_cluster/Light_uncertainty/
-singularity exec ../Singularity/cmdstanr.sif  Rscript Select_eigenvectors_per_sp.R ${SLURM_ARRAY_TASK_ID}
+singularity exec ../Singularity/glmnet.sif  Rscript Select_eigenvectors_per_sp.R ${SLURM_ARRAY_TASK_ID}
 
