@@ -13,6 +13,8 @@ library(glmnet)
 
 # setwd("D:/Mes Donnees/PhD/R_codes/PhD_cluster/Light_uncertainty/")
 
+# Args
+arg <- commandArgs(trailingOnly = TRUE)
 ID <- as.integer(arg[1])
 # ID = 1
 
@@ -79,7 +81,9 @@ selection <- as.data.frame(summary(coef_glmnet)) %>%
 eigenval_select <- eigenval %>% 
   select(selection$Vars)
 
+print("Computed")
+
 write_csv(eigenval_select,
-          paste0("Eigenvectors/", s, "_", sample, ".csv"))
+          paste0("Eigenvectors/", s, "/", s, "_", sample, ".csv"))
 
 

@@ -11,7 +11,7 @@
 #SBATCH --mail-user=vincyane.badouard@gmail.com
 
 module purge
-module load singularity/3.6.3
+module load singularity
 
 cd /scratch/users/badouardv/PhD_cluster/Light_uncertainty/
 singularity exec ../Singularity/glmnet.sif  Rscript Select_eigenvectors_per_sp.R ${SLURM_ARRAY_TASK_ID}

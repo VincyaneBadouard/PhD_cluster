@@ -31,11 +31,11 @@ getwd()
 # Presence data
 # load real presence-absences data on 9ha 
 load("../Data/Realsp_9ha_eigenvectors_incertitude.Rdata")
-# View(datalist_eig[[1]])
+# print(datalist[[1]])
 
-x <- datalist_eig[names(datalist_eig) %in% s][[s]] %>% # only species in sp
+x <- datalist[names(datalist) %in% s][[s]] %>% # only species in sp
   filter(Sample == Combin[ID,]$Sample) # for this sample (tree height estimation)
-# View(datalist_eig[["Iryanthera_hostmannii"]])
+# View(datalist[["Iryanthera_hostmannii"]])
 
 
 # DataM
