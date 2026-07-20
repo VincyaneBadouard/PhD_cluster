@@ -4,7 +4,7 @@
 #SBATCH --partition=cpu-dedicated
 #SBATCH --output=logsout/log_%a.out
 #SBATCH --error=logserr/log_%a.err
-#SBATCH --array=1-20
+#SBATCH --array=1-200
 #SBATCH --time=5:00:00
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=4
